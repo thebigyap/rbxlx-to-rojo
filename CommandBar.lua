@@ -1,6 +1,9 @@
 local HttpService = game:GetService("HttpService")
 
 local BASE_URL = "http://localhost:8080/save"
+local SETTINGS = {
+	["deleteScriptsAfterExport"] = false,
+}
 
 local function buildPath(obj)
 	local parts = {}
@@ -56,6 +59,9 @@ local function exportScript(obj)
 	if not success then
 		warn("Failed to send " .. relPath .. ": " .. tostring(postErr))
 	else
+		if SETTINGS.deleteScriptsAfterExport then
+			obj:Destroy()
+		end
 		print("Exported", relPath .. ext)
 	end
 end
